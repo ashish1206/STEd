@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include"function_declare.h"
 #include"global_var.h"
-#include"buffer.cpp"
+#include"buffer.h"
 #define EDITOR_VERSION "0.0.1"
 
 void clearTerminal(){

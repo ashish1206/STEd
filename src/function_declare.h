@@ -6,12 +6,12 @@ int getWindowSize(int&, int&);
 
 /**input key_input.cpp**/
 void editorProcessKeyPress();
-char editorReadKey();
+int editorReadKey();
 
 /**output output_screen.cpp**/
 void editorRefreshScreen();
 void clearTerminal();
 
-/**buffer buffer.cpp**/
+/**buffer buffer.h**/
 void bufAppend(struct buffer *, char *, int );
 void bufFree(struct buffer *);

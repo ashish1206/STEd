@@ -1,4 +1,3 @@
-#pragma once
 #include<termios.h>
 struct editorConfig{
 	int cursorX, cursorY;
