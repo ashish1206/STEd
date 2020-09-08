@@ -23,7 +23,7 @@ void clearTerminal(struct buffer *b){
 void editorDrawEdges(struct buffer *b){
 	for(int y=0;y<E.windowRow;y++){
 		if(y >= E.numRows){
-			if (y == E.windowRow / 3) {
+			if (y == E.windowRow/3 && E.numRows == 0) {
 			char welcome[80];
 			int welcomelen = snprintf(welcome, sizeof(welcome),
 				"Simple editor -- version %s", EDITOR_VERSION);

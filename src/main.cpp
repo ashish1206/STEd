@@ -16,11 +16,13 @@ void initEditor(){
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
 }
 
-int main(){
+int main(int argc, char *args[]){
 	enableRawMode();
 	initEditor();
-	editorOpen();
-	
+	if(argc >= 2){
+		editorOpen(args[1]);
+	}
+
 	while(true){
 		editorRefreshScreen();
 		editorProcessKeyPress();

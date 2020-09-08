@@ -17,4 +17,4 @@ void bufAppend(struct buffer *, char *, int );
 void bufFree(struct buffer *);
 
 /**file I/O file_io.cpp**/
-void editorOpen();
+void editorOpen(char *);
