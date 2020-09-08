@@ -22,7 +22,8 @@ void clearTerminal(struct buffer *b){
 
 void editorDrawEdges(struct buffer *b){
 	for(int y=0;y<E.windowRow;y++){
-		if(y >= E.numRows){
+		int fileRow = y+E.rowOffset;
+		if(fileRow >= E.numRows){
 			if (y == E.windowRow/3 && E.numRows == 0) {
 			char welcome[80];
 			int welcomelen = snprintf(welcome, sizeof(welcome),
@@ -42,9 +43,9 @@ void editorDrawEdges(struct buffer *b){
 			}
 		}
 		else{
-			int len = E.row[y].size;
+			int len = E.row[fileRow].size;
 			if(len > E.windowCol)len = E.windowCol;
-			bufAppend(b, E.row[y].str, len);
+			bufAppend(b, E.row[fileRow].str, len);
 		}
 		bufAppend(b, (char *)"\x1b[K", 3);
 		if(y < E.windowRow-1)
@@ -52,12 +53,22 @@ void editorDrawEdges(struct buffer *b){
 	}
 }
 
+void editorScroll(){
+	if(E.cursorY < E.rowOffset){
+		E.rowOffset = E.cursorY; 
+	}
+	if(E.cursorY >= E.rowOffset + E.windowRow){
+		E.rowOffset = E.cursorY - E.windowRow +1;
+	}
+}
+
 void editorRefreshScreen(){
+	editorScroll();
 	struct buffer b = {NULL, 0};
 	clearTerminal(&b);
 	editorDrawEdges(&b);
 	char buf[32];
-	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", E.cursorY+1, E.cursorX+1);
+	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", (E.cursorY - E.rowOffset)+1, E.cursorX+1);
 	bufAppend(&b, buf, strlen(buf));
 	// bufAppend(&b, (char*)"\x1b[H", 3);
 	write(STDIN_FILENO, b.str, b.len);
