@@ -11,21 +11,30 @@ enum editorKey{
 	ARROW_LEFT = 1000,
 	ARRROW_RIGHT,
 	ARROW_UP,
-	ARROW_DOWN
+	ARROW_DOWN,
+	PAGE_UP,
+	PAGE_DOWN,
+	HOME_KEY,
+	END_KEY,
+	DEL_KEY
 };
 
 void editorMoveCursor(int key){
 	switch(key){
 		case ARROW_UP:
+			if(E.cursorY != 0)
 			E.cursorY--;
 			break;
 		case ARRROW_RIGHT:
+			if(E.cursorX != E.windowCol-1)
 			E.cursorX++;
 			break;
 		case ARROW_DOWN:
+			if(E.cursorY != E.windowRow-1)
 			E.cursorY++;
 			break;
 		case ARROW_LEFT:
+			if(E.cursorX != 0)
 			E.cursorX--;
 			break;
 	}
@@ -42,15 +51,49 @@ int editorReadKey(){
 		if(read(STDIN_FILENO, &seq[0], 1) != 1)return '\x1b';
 		if(read(STDIN_FILENO, &seq[1], 1) != 1)return '\x1b';
 		if(seq[0] == '['){
+			if(seq[0] >= '0' && seq[1]<= '9'){
+				if(read(STDIN_FILENO, &seq[2], 1) != 1)return '\x1b';
+				if(seq[2] == '~'){
+					switch (seq[1]){
+					case '1':
+					case '7':
+						return HOME_KEY;
+					case '3':
+						return DEL_KEY;
+					case '4':
+					case '8':
+						return END_KEY;
+					case '5':
+						return PAGE_UP;
+					case '6':
+						return PAGE_DOWN;
+					}
+				}
+			}
+			else{
+				switch (seq[1]){
+				case 'A':
+					return ARROW_UP;
+				case 'B':
+					return ARROW_DOWN;
+				case 'C':
+					return ARRROW_RIGHT;
+				case 'D':
+					return ARROW_LEFT;
+				case 'H':
+					return HOME_KEY;
+				case 'F':
+					return END_KEY;
+				}
+			}
+		}
+		else if(seq[0] == '0'){
+			if(read(STDIN_FILENO, &seq[1], 1) != 1)return '\x1b';
 			switch (seq[1]){
-			case 'A':
-				return ARROW_UP;
-			case 'B':
-				return ARROW_DOWN;
-			case 'C':
-				return ARRROW_RIGHT;
-			case 'D':
-				return ARROW_LEFT;
+			case 'H':
+				return HOME_KEY;
+			case 'F':
+				return END_KEY;
 			}
 		}
 		return '\x1b';
@@ -67,6 +110,21 @@ void editorProcessKeyPress(){
 			clearTerminal();
 			exit(1);
 			break;
+		case PAGE_UP:
+		case PAGE_DOWN:
+		{
+			int moves = E.windowRow;
+			while(moves--){
+				editorMoveCursor(c == PAGE_UP? ARROW_UP: ARROW_DOWN);
+			}
+		}
+		break;
+		case HOME_KEY:
+			E.cursorX = 0;
+		break;
+		case END_KEY:
+			E.cursorX = E.windowCol-1;
+		break;
 		case ARROW_LEFT:
 		case ARROW_DOWN:
 		case ARRROW_RIGHT:
