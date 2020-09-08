@@ -20,14 +20,19 @@ enum editorKey{
 };
 
 void editorMoveCursor(int key){
+	eRow *row = E.cursorY >= E.numRows ? NULL : &E.row[E.cursorY];
 	switch(key){
 		case ARROW_UP:
 			if(E.cursorY != 0)
 			E.cursorY--;
 			break;
 		case ARRROW_RIGHT:
-			if(E.cursorX != E.windowCol-1)
+			if(row && E.cursorX < row->size)
 			E.cursorX++;
+			else if(row && E.cursorY < E.numRows){
+				E.cursorY++;
+				E.cursorX = 0;
+			}
 			break;
 		case ARROW_DOWN:
 			if(E.cursorY < E.numRows)
@@ -36,7 +41,16 @@ void editorMoveCursor(int key){
 		case ARROW_LEFT:
 			if(E.cursorX != 0)
 			E.cursorX--;
+			else if(E.cursorY > 0){
+				E.cursorY--;
+				E.cursorX = E.row[E.cursorY].size;
+			}
 			break;
+	}
+	row = E.cursorY >= E.numRows ? NULL : &E.row[E.cursorY];
+	int rowlen = row ? row->size : 0;
+	if(rowlen < E.cursorX){
+		E.cursorX = rowlen;
 	}
 }
 

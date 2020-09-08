@@ -15,6 +15,7 @@ void initEditor(){
 	E.numRows = 0;
 	E.row = NULL;
 	E.rowOffset = 0;
+	E.colOffset = 0;
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
 }
 

@@ -43,9 +43,10 @@ void editorDrawEdges(struct buffer *b){
 			}
 		}
 		else{
-			int len = E.row[fileRow].size;
+			int len = E.row[fileRow].size - E.colOffset;
+			if(len < 0)len = 0;
 			if(len > E.windowCol)len = E.windowCol;
-			bufAppend(b, E.row[fileRow].str, len);
+			bufAppend(b, &E.row[fileRow].str[E.colOffset], len);
 		}
 		bufAppend(b, (char *)"\x1b[K", 3);
 		if(y < E.windowRow-1)
@@ -60,6 +61,12 @@ void editorScroll(){
 	if(E.cursorY >= E.rowOffset + E.windowRow){
 		E.rowOffset = E.cursorY - E.windowRow +1;
 	}
+	if(E.cursorX < E.colOffset){
+		E.colOffset = E.cursorX;
+	}
+	if(E.cursorX >= E.colOffset + E.windowCol){
+		E.colOffset = E.cursorX - E.windowCol +1;
+	}
 }
 
 void editorRefreshScreen(){
@@ -68,7 +75,7 @@ void editorRefreshScreen(){
 	clearTerminal(&b);
 	editorDrawEdges(&b);
 	char buf[32];
-	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", (E.cursorY - E.rowOffset)+1, E.cursorX+1);
+	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", (E.cursorY - E.rowOffset)+1, (E.cursorX - E.colOffset)+1);
 	bufAppend(&b, buf, strlen(buf));
 	// bufAppend(&b, (char*)"\x1b[H", 3);
 	write(STDIN_FILENO, b.str, b.len);

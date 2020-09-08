@@ -10,6 +10,7 @@ struct editorConfig{
 	eRow *row;
 	int numRows;
 	int rowOffset;
+	int colOffset;
 	struct termios orig_termios;
 };
 
