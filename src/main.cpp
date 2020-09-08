@@ -10,6 +10,8 @@
 struct editorConfig E;
 
 void initEditor(){
+	E.cursorX = 0;
+	E.cursorY = 0;
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
 }
 
