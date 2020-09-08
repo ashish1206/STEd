@@ -7,7 +7,7 @@ typedef struct edtRow{
 struct editorConfig{
 	int cursorX, cursorY;
 	int windowRow, windowCol;
-	eRow row;
+	eRow *row;
 	int numRows;
 	struct termios orig_termios;
 };

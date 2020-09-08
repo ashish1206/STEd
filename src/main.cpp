@@ -13,6 +13,7 @@ void initEditor(){
 	E.cursorX = 0;
 	E.cursorY = 0;
 	E.numRows = 0;
+	E.row = NULL;
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
 }
 

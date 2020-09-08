@@ -42,9 +42,9 @@ void editorDrawEdges(struct buffer *b){
 			}
 		}
 		else{
-			int len = E.row.size;
+			int len = E.row[y].size;
 			if(len > E.windowCol)len = E.windowCol;
-			bufAppend(b, E.row.str, len);
+			bufAppend(b, E.row[y].str, len);
 		}
 		bufAppend(b, (char *)"\x1b[K", 3);
 		if(y < E.windowRow-1)
