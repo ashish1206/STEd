@@ -22,22 +22,29 @@ void clearTerminal(struct buffer *b){
 
 void editorDrawEdges(struct buffer *b){
 	for(int y=0;y<E.windowRow;y++){
-		if (y == E.windowRow / 3) {
-	      char welcome[80];
-	      int welcomelen = snprintf(welcome, sizeof(welcome),
-	        "Simple editor -- version %s", EDITOR_VERSION);
-	      if (welcomelen > E.windowRow) welcomelen = E.windowRow;
-	      int padding = (E.windowCol - welcomelen)/2;
-	      if(padding){
-	      	bufAppend(b, (char *)"~", 1);
-	      	padding--;
-	      }
-	      while(padding--){
-	      	bufAppend(b, (char *)" ", 1);
-	      }
-	      bufAppend(b, welcome, welcomelen);
-	    } else {
-			bufAppend(b, (char *)"~", 1);
+		if(y >= E.numRows){
+			if (y == E.windowRow / 3) {
+			char welcome[80];
+			int welcomelen = snprintf(welcome, sizeof(welcome),
+				"Simple editor -- version %s", EDITOR_VERSION);
+			if (welcomelen > E.windowRow) welcomelen = E.windowRow;
+			int padding = (E.windowCol - welcomelen)/2;
+			if(padding){
+				bufAppend(b, (char *)"~", 1);
+				padding--;
+			}
+			while(padding--){
+				bufAppend(b, (char *)" ", 1);
+			}
+			bufAppend(b, welcome, welcomelen);
+			} else {
+				bufAppend(b, (char *)"~", 1);
+			}
+		}
+		else{
+			int len = E.row.size;
+			if(len > E.windowCol)len = E.windowCol;
+			bufAppend(b, E.row.str, len);
 		}
 		bufAppend(b, (char *)"\x1b[K", 3);
 		if(y < E.windowRow-1)
