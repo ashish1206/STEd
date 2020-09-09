@@ -12,6 +12,7 @@ int editorReadKey();
 void editorRefreshScreen();
 void clearTerminal();
 void editorScroll();
+void editorSetStatusMessage(const char *, ...);
 
 /**buffer buffer.h**/
 void bufAppend(struct buffer *, char *, int );

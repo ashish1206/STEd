@@ -18,8 +18,10 @@ void initEditor(){
 	E.colOffset = 0;
 	E.renderX = 0;
 	E.filename = NULL;
+	E.statusMsg[0] = '\0';
+	E.status_time = 0;
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
-	E.windowRow -= 1;
+	E.windowRow -= 2;
 }
 
 int main(int argc, char *args[]){
@@ -28,7 +30,7 @@ int main(int argc, char *args[]){
 	if(argc >= 2){
 		editorOpen(args[1]);
 	}
-
+	editorSetStatusMessage("Help: ctrl+q = quit");
 	while(true){
 		editorRefreshScreen();
 		editorProcessKeyPress();
