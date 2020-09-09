@@ -20,6 +20,16 @@ void clearTerminal(struct buffer *b){
 	bufAppend(b, (char *)"\x1b[?25h", 6);
 }
 
+int editorCursorXToRenderX(eRow *row, int cx){
+	int rx = 0;
+	for(int i=0; i<cx; i++, rx++){
+		if(row->str[i] == '\t'){
+			rx += (EDITOR_TAB_STOP - 1) - (rx % EDITOR_TAB_STOP);
+		}
+	}
+	return rx;
+}
+
 void editorDrawEdges(struct buffer *b){
 	for(int y=0;y<E.windowRow;y++){
 		int fileRow = y+E.rowOffset;
@@ -43,10 +53,10 @@ void editorDrawEdges(struct buffer *b){
 			}
 		}
 		else{
-			int len = E.row[fileRow].size - E.colOffset;
+			int len = E.row[fileRow].rSize - E.colOffset;
 			if(len < 0)len = 0;
 			if(len > E.windowCol)len = E.windowCol;
-			bufAppend(b, &E.row[fileRow].str[E.colOffset], len);
+			bufAppend(b, &E.row[fileRow].render[E.colOffset], len);
 		}
 		bufAppend(b, (char *)"\x1b[K", 3);
 		if(y < E.windowRow-1)
@@ -55,17 +65,21 @@ void editorDrawEdges(struct buffer *b){
 }
 
 void editorScroll(){
+	E.renderX = E.cursorX;
+	if(E.cursorY < E.numRows){
+		E.renderX = editorCursorXToRenderX(&E.row[E.cursorY], E.cursorX);
+	}
 	if(E.cursorY < E.rowOffset){
 		E.rowOffset = E.cursorY; 
 	}
 	if(E.cursorY >= E.rowOffset + E.windowRow){
 		E.rowOffset = E.cursorY - E.windowRow +1;
 	}
-	if(E.cursorX < E.colOffset){
-		E.colOffset = E.cursorX;
+	if(E.renderX < E.colOffset){
+		E.colOffset = E.renderX;
 	}
-	if(E.cursorX >= E.colOffset + E.windowCol){
-		E.colOffset = E.cursorX - E.windowCol +1;
+	if(E.renderX >= E.colOffset + E.windowCol){
+		E.colOffset = E.renderX - E.windowCol +1;
 	}
 }
 
@@ -75,7 +89,7 @@ void editorRefreshScreen(){
 	clearTerminal(&b);
 	editorDrawEdges(&b);
 	char buf[32];
-	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", (E.cursorY - E.rowOffset)+1, (E.cursorX - E.colOffset)+1);
+	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", (E.cursorY - E.rowOffset)+1, (E.renderX - E.colOffset)+1);
 	bufAppend(&b, buf, strlen(buf));
 	// bufAppend(&b, (char*)"\x1b[H", 3);
 	write(STDIN_FILENO, b.str, b.len);
