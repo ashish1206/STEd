@@ -65,7 +65,7 @@ void editorDrawEdges(struct buffer *b){
 }
 
 void editorScroll(){
-	E.renderX = E.cursorX;
+	E.renderX = 0;
 	if(E.cursorY < E.numRows){
 		E.renderX = editorCursorXToRenderX(&E.row[E.cursorY], E.cursorX);
 	}

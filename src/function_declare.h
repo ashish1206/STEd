@@ -11,6 +11,7 @@ int editorReadKey();
 /**output output_screen.cpp**/
 void editorRefreshScreen();
 void clearTerminal();
+void editorScroll();
 
 /**buffer buffer.h**/
 void bufAppend(struct buffer *, char *, int );
