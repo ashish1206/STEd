@@ -30,25 +30,41 @@ int editorCursorXToRenderX(eRow *row, int cx){
 	return rx;
 }
 
+void editorStatusbar(struct buffer *b){
+	int len = 0;
+	bufAppend(b, (char *)"\x1b[7m", 4);
+	char status[80];
+	len = snprintf(status, sizeof(status), "%.40s %d L", 
+	E.filename ? E.filename : (char *)"[No File]", E.numRows);
+	char curPos[80];
+	int curPosLen = snprintf(curPos, sizeof(curPos), "%d,%d", E.cursorY+1, E.renderX+1);
+	bufAppend(b, status, len);
+	while(len++ < E.windowCol - curPosLen){
+		bufAppend(b, (char *)" ", 1);
+	}
+	bufAppend(b, curPos, curPosLen);
+	bufAppend(b, (char *)"\x1b[m", 3);
+}
+
 void editorDrawEdges(struct buffer *b){
 	for(int y=0;y<E.windowRow;y++){
 		int fileRow = y+E.rowOffset;
 		if(fileRow >= E.numRows){
 			if (y == E.windowRow/3 && E.numRows == 0) {
-			char welcome[80];
-			int welcomelen = snprintf(welcome, sizeof(welcome),
-				"Simple editor -- version %s", EDITOR_VERSION);
-			if (welcomelen > E.windowRow) welcomelen = E.windowRow;
-			int padding = (E.windowCol - welcomelen)/2;
-			if(padding){
-				bufAppend(b, (char *)"~", 1);
-				padding--;
-			}
-			while(padding--){
-				bufAppend(b, (char *)" ", 1);
-			}
-			bufAppend(b, welcome, welcomelen);
-			} else {
+				char welcome[80];
+				int welcomelen = snprintf(welcome, sizeof(welcome),
+					"Simple editor -- version %s", EDITOR_VERSION);
+				if (welcomelen > E.windowRow) welcomelen = E.windowRow;
+				int padding = (E.windowCol - welcomelen)/2;
+				if(padding){
+					bufAppend(b, (char *)"~", 1);
+					padding--;
+				}
+				while(padding--){
+					bufAppend(b, (char *)" ", 1);
+				}
+				bufAppend(b, welcome, welcomelen);
+			} else{
 				bufAppend(b, (char *)"~", 1);
 			}
 		}
@@ -59,7 +75,6 @@ void editorDrawEdges(struct buffer *b){
 			bufAppend(b, &E.row[fileRow].render[E.colOffset], len);
 		}
 		bufAppend(b, (char *)"\x1b[K", 3);
-		if(y < E.windowRow-1)
 		bufAppend(b, (char *)"\r\n", 2);
 	}
 }
@@ -88,6 +103,7 @@ void editorRefreshScreen(){
 	struct buffer b = {NULL, 0};
 	clearTerminal(&b);
 	editorDrawEdges(&b);
+	editorStatusbar(&b);
 	char buf[32];
 	snprintf(buf, sizeof(buf), (char *)"\x1b[%d;%dH", (E.cursorY - E.rowOffset)+1, (E.renderX - E.colOffset)+1);
 	bufAppend(&b, buf, strlen(buf));

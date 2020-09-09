@@ -17,7 +17,9 @@ void initEditor(){
 	E.rowOffset = 0;
 	E.colOffset = 0;
 	E.renderX = 0;
+	E.filename = NULL;
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
+	E.windowRow -= 1;
 }
 
 int main(int argc, char *args[]){

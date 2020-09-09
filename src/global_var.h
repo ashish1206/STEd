@@ -15,6 +15,7 @@ struct editorConfig{
 	int numRows;
 	int rowOffset;
 	int colOffset;
+	char *filename;
 	struct termios orig_termios;
 };
 
