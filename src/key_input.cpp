@@ -127,12 +127,6 @@ void editorProcessKeyPress(){
 		case PAGE_UP:
 		case PAGE_DOWN:
 		{
-			// if (c == PAGE_UP) {
-			// 	E.cursorY = E.rowOffset;
-			// } else if (c == PAGE_DOWN) {
-			// 	E.cursorY = E.rowOffset + E.windowRow - 1;
-			// if (E.cursorY > E.numRows) E.cursorY = E.numRows;
-			// }
 			int moves = E.windowRow;
 			while(moves--){
 				editorMoveCursor(c == PAGE_UP? ARROW_UP: ARROW_DOWN);
@@ -146,7 +140,8 @@ void editorProcessKeyPress(){
 			E.cursorX = 0;
 		break;
 		case END_KEY:
-			E.cursorX = E.windowCol-1;
+			if(E.cursorY < E.numRows)
+			E.cursorX = E.row[E.cursorY].size;
 		break;
 		case ARROW_LEFT:
 		case ARROW_DOWN:
