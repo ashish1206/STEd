@@ -7,4 +7,4 @@
 
  Functions available
   - To open a file: ```./sted filepath```
-  - To quite the editor: ```ctrl + q```
+  - To quit the editor: ```ctrl + q```
