@@ -149,5 +149,8 @@ void editorProcessKeyPress(){
 		case ARROW_UP:
 			editorMoveCursor(c);
 			break;
+		default:
+			editorInsertChar(c);
+			break;
 	}
 }

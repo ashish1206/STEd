@@ -19,7 +19,6 @@ struct editorConfig{
 	char *filename;
 	time_t status_time;
 	char statusMsg[80];
-
 	struct termios orig_termios;
 };
 
