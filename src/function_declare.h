@@ -22,6 +22,7 @@ void bufFree(struct buffer *);
 void editorOpen(char *);
 void editorUpdateRow(struct edtRow *);
 void editorAppendRow(char *, size_t);
+void editorSaveFile();
 
 /**editor operations edit_text.cpp**/
 void editorInsertChar(char);

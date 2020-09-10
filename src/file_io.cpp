@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<unistd.h>
+#include<fcntl.h>
 #include"global_var.h"
 #include"function_declare.h"
 
@@ -57,4 +58,33 @@ void editorOpen(char *fileName){
     }
     free(line);
     fclose(fp);
+}
+
+char * editorRowsToStr(int& bufLen){
+    for(int i=0; i<E.numRows; i++){
+        bufLen += E.row[i].size+1;
+    }
+
+    char *buf = (char *)malloc(bufLen);
+    char *ptr = buf;
+    for(int i=0; i<E.numRows; i++){
+        memcpy(ptr, E.row[i].str, E.row[i].size);
+        ptr += E.row[i].size;
+        *ptr = '\n';
+        ptr++;
+    }
+    return buf;
+}
+
+void editorSaveFile(){
+    if(E.filename == NULL)return;
+
+    int len = 0;
+    char *buf = editorRowsToStr(len);
+
+    int fd = open(E.filename, O_RDWR | O_CREAT, 0644);
+    ftruncate(fd, len);
+    write(fd, buf, len);
+    close(fd);
+    free(buf);
 }
