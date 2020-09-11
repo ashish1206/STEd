@@ -22,6 +22,7 @@ void initEditor(){
 	E.status_time = 0;
 	if(getWindowSize(E.windowRow, E.windowCol) == -1)die("getWindowSize");
 	E.windowRow -= 2;
+	E.dirty = 0;
 }
 
 int main(int argc, char *args[]){
@@ -30,7 +31,7 @@ int main(int argc, char *args[]){
 	if(argc >= 2){
 		editorOpen(args[1]);
 	}
-	editorSetStatusMessage("Help: ctrl+q = quit");
+	editorSetStatusMessage("Help:ctrl+s = save | ctrl+q = quit");
 	while(true){
 		editorRefreshScreen();
 		editorProcessKeyPress();

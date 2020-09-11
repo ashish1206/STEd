@@ -73,6 +73,7 @@ char * editorRowsToStr(int& bufLen){
         *ptr = '\n';
         ptr++;
     }
+    E.dirty = 0;
     return buf;
 }
 
@@ -83,8 +84,18 @@ void editorSaveFile(){
     char *buf = editorRowsToStr(len);
 
     int fd = open(E.filename, O_RDWR | O_CREAT, 0644);
-    ftruncate(fd, len);
-    write(fd, buf, len);
-    close(fd);
+    if(fd != -1){
+        if(ftruncate(fd, len) != -1){
+            if(write(fd, buf, len) == len){
+                close(fd);
+                free(buf);
+                editorSetStatusMessage("%d bytes written to disk", len);
+                E.dirty = 0;
+                return;
+            }
+        }
+        close(fd);
+    }
     free(buf);
+    editorSetStatusMessage("can't save! I/O error");
 }

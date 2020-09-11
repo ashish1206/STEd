@@ -51,8 +51,9 @@ void editorStatusbar(struct buffer *b){
 	int len = 0;
 	bufAppend(b, (char *)"\x1b[7m", 4);
 	char status[80];
-	len = snprintf(status, sizeof(status), "%.40s %d L", 
-	E.filename ? E.filename : (char *)"[No File]", E.numRows);
+	len = snprintf(status, sizeof(status), "%.40s %d L %s", 
+	E.filename ? E.filename : (char *)"[No File]", E.numRows, 
+	E.dirty ? (char *)"(modified)" : "");
 	char curPos[80];
 	int curPosLen = snprintf(curPos, sizeof(curPos), "%d,%d", E.cursorY+1, E.renderX+1);
 	bufAppend(b, status, len);

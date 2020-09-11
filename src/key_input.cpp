@@ -120,11 +120,17 @@ int editorReadKey(){
 
 void editorProcessKeyPress(){
 	int c = editorReadKey();
+	int static editorQuit = EDITOR_QUIT_TIME;
 	switch(c){
 		case '\r':
 
 			break;
 		case CTRL_KEY('q') :
+			if(E.dirty && editorQuit){
+				editorSetStatusMessage("WARNING! File have unsaved changes, press ctrl+q %d more time to quit", editorQuit);
+				editorQuit--;
+				return;
+			}
 			clearTerminal();
 			exit(1);
 			break;
@@ -169,4 +175,5 @@ void editorProcessKeyPress(){
 			editorInsertChar(c);
 			break;
 	}
+	editorQuit = EDITOR_QUIT_TIME;
 }

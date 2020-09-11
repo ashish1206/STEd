@@ -9,6 +9,7 @@ void editorRowInsertChar(eRow *row, int pos, char c){
     row->str[pos] = c;
     row->size++;
     editorUpdateRow(row);
+    E.dirty++;
 }
 
 void editorInsertChar(char c){
@@ -17,4 +18,5 @@ void editorInsertChar(char c){
     }
     editorRowInsertChar(&E.row[E.cursorY], E.cursorX, c);
     E.cursorX++;
+    E.dirty++;
 }
