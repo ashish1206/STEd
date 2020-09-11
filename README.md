@@ -8,3 +8,4 @@
  Functions available
   - To open a file: ```./sted filepath```
   - To quit the editor: ```ctrl + q```
+  - To save the file: ```ctrl + s```
