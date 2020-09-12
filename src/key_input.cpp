@@ -123,9 +123,7 @@ void editorProcessKeyPress(){
 	int static editorQuit = EDITOR_QUIT_TIME;
 	switch(c){
 		case '\r':
-			editorInsertRow(E.cursorY, (char *)"", 0);
-			E.cursorY++;
-			E.dirty++;
+			editorInsertNewLine();
 			break;
 		case CTRL_KEY('q') :
 			if(E.dirty && editorQuit){

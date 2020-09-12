@@ -67,3 +67,20 @@ void editorDelChar(){
         E.cursorY--;
     }
 }
+
+void editorInsertNewLine(){
+    if(E.cursorX == 0){
+        editorInsertRow(E.cursorY, (char *)"", 0);
+    }
+    else{
+        eRow *row = &E.row[E.cursorY];
+        editorInsertRow(E.cursorY + 1, &row->str[E.cursorX], row->size - E.cursorX);
+        row = &E.row[E.cursorY];
+        row->size = E.cursorX;
+        row->str[row->size] = '\0';
+        editorUpdateRow(row);
+    }
+    E.cursorX = 0;
+    E.cursorY++;
+    E.dirty++;
+}
