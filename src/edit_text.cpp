@@ -14,7 +14,7 @@ void editorRowInsertChar(eRow *row, int pos, char c){
 
 void editorInsertChar(char c){
     if(E.cursorY == E.numRows){
-        editorAppendRow((char *)"", 0);
+        editorInsertRow(E.cursorY, (char *)"", 0);
     }
     editorRowInsertChar(&E.row[E.cursorY], E.cursorX, c);
     E.cursorX++;

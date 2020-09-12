@@ -29,17 +29,18 @@ void editorUpdateRow(eRow *row){
     row->rSize = id;
 }
 
-void editorAppendRow(char *str, size_t len){
+void editorInsertRow(int pos, char *str, size_t len){
+    if(pos<0 || pos>E.numRows)return;
     E.row = (eRow *)realloc(E.row, sizeof(eRow)*(E.numRows + 1));
-    int lastRow = E.numRows;
-    E.row[lastRow].str = (char *)malloc(len + 1);
-    E.row[lastRow].size = len;
-    memcpy(E.row[lastRow].str, str, len);
-    E.row[lastRow].str[len] = '\0';
+    memmove(&E.row[pos + 1], &E.row[pos], sizeof(eRow)*(E.numRows - pos));
+    E.row[pos].str = (char *)malloc(len + 1);
+    E.row[pos].size = len;
+    memcpy(E.row[pos].str, str, len);
+    E.row[pos].str[len] = '\0';
     E.numRows++;
-    E.row[lastRow].rSize = 0;
-    E.row[lastRow].render = NULL;
-    editorUpdateRow(&E.row[lastRow]);
+    E.row[pos].rSize = 0;
+    E.row[pos].render = NULL;
+    editorUpdateRow(&E.row[pos]);
 }
 
 void editorOpen(char *fileName){
@@ -54,7 +55,7 @@ void editorOpen(char *fileName){
         while(len > 0 && (line[len-1] == '\n' || line[len-1] == '\r')){
             len--;
         }
-        editorAppendRow(line, len);
+        editorInsertRow(E.numRows, line, len);
     }
     free(line);
     fclose(fp);
