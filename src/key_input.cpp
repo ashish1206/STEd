@@ -156,10 +156,11 @@ void editorProcessKeyPress(){
 			if(E.cursorY < E.numRows)
 			E.cursorX = E.row[E.cursorY].size;
 		break;
-		case BACKSPACE:
 		case DEL_KEY:
+			editorMoveCursor(ARRROW_RIGHT);
+		case BACKSPACE:
 		case CTRL_KEY('h'):
-
+			editorDelChar();
 			break;
 		case ARROW_LEFT:
 		case ARROW_DOWN:

@@ -26,3 +26,4 @@ void editorSaveFile();
 
 /**editor operations edit_text.cpp**/
 void editorInsertChar(char);
+void editorDelChar();
