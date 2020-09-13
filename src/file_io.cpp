@@ -79,7 +79,12 @@ char * editorRowsToStr(int& bufLen){
 }
 
 void editorSaveFile(){
-    if(E.filename == NULL)return;
+    if(E.filename == NULL){
+        E.filename = editorPrompt((char *)"Save as : %s");
+        if(E.filename == NULL){
+            return;
+        }
+    }
 
     int len = 0;
     char *buf = editorRowsToStr(len);

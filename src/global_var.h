@@ -25,3 +25,16 @@ struct editorConfig{
 };
 
 extern struct editorConfig E;
+
+enum editorKey{
+	BACKSPACE = 127,
+	ARROW_LEFT = 1000,
+	ARRROW_RIGHT,
+	ARROW_UP,
+	ARROW_DOWN,
+	PAGE_UP,
+	PAGE_DOWN,
+	HOME_KEY,
+	END_KEY,
+	DEL_KEY
+};

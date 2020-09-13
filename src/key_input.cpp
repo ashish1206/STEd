@@ -7,19 +7,6 @@
 #include"global_var.h"
 #define CTRL_KEY(k) (k & 0x1f)
 
-enum editorKey{
-	BACKSPACE = 127,
-	ARROW_LEFT = 1000,
-	ARRROW_RIGHT,
-	ARROW_UP,
-	ARROW_DOWN,
-	PAGE_UP,
-	PAGE_DOWN,
-	HOME_KEY,
-	END_KEY,
-	DEL_KEY
-};
-
 void editorMoveCursor(int key){
 	eRow *row = E.cursorY >= E.numRows ? NULL : &E.row[E.cursorY];
 	switch(key){

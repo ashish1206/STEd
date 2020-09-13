@@ -28,3 +28,6 @@ void editorSaveFile();
 void editorInsertChar(char);
 void editorDelChar();
 void editorInsertNewLine();
+
+/**editor prompt editor_prompt.cpp**/
+char * editorPrompt(char *);
