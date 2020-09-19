@@ -7,5 +7,6 @@
 
  Functions available
   - To open a file: ```./sted filepath```
+  - To search in file: ```ctrl + f```
   - To quit the editor: ```ctrl + q```
   - To save the file: ```ctrl + s```
