@@ -29,7 +29,7 @@ void editorUpdateRow(eRow *row){
     row->rSize = id;
 }
 
-void editorInsertRow(int pos, char *str, size_t len){
+void editorInsertRow(int pos, char *str, int len){
     if(pos<0 || pos>E.numRows)return;
     E.row = (eRow *)realloc(E.row, sizeof(eRow)*(E.numRows + 1));
     memmove(&E.row[pos + 1], &E.row[pos], sizeof(eRow)*(E.numRows - pos));

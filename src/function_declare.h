@@ -21,7 +21,7 @@ void bufFree(struct buffer *);
 /**file I/O file_io.cpp**/
 void editorOpen(char *);
 void editorUpdateRow(struct edtRow *);
-void editorInsertRow(int, char *, size_t);
+void editorInsertRow(int, char *, int);
 void editorSaveFile();
 
 /**editor operations edit_text.cpp**/
@@ -31,3 +31,6 @@ void editorInsertNewLine();
 
 /**editor prompt editor_prompt.cpp**/
 char * editorPrompt(char *);
+
+/**editor search editor_search.cpp**/
+void editorSearch();

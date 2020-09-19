@@ -124,6 +124,9 @@ void editorProcessKeyPress(){
 		case CTRL_KEY('s'):
 			editorSaveFile();
 			break;
+		case CTRL_KEY('f'):
+			editorSearch();
+			break;
 		case PAGE_UP:
 		case PAGE_DOWN:
 		{

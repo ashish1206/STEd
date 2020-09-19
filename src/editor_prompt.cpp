@@ -14,7 +14,7 @@ char * editorPrompt(char * promptMsg){
         char c = editorReadKey();
         if(c == '\r'){
             if(buflen != 0){
-                editorSetStatusMessage((char *)"File saved");
+                editorSetStatusMessage((char *)"");
                 return buf;
             }
             else{
