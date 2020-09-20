@@ -6,10 +6,10 @@
 
 bool searchForward(char *query){
     bool found = false;
-    int cx=E.cursorX,cy=E.cursorY;
+    int cx=E.cursorX+1,cy=E.cursorY;
     for(int i=cy; i<E.numRows; i++){
         eRow *row = &E.row[i];
-        char *match = strstr(&row->str[cx+1], query);
+        char *match = strstr(&row->str[cx], query);
         if(match != NULL){
             E.cursorX = match - row->str;
             E.cursorY = i;
